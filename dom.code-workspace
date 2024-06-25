@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../HOODLUM"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "dom",
+		"liveServer.settings.port": 5501
+	}
+}

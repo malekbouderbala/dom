@@ -1,83 +1,58 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const itemsContainer = document.querySelector('.cart-items');
-    const totalPriceElement = document.querySelector('.total-price');
-
-    // Example data - replace with dynamic data fetching or server-side rendering
-    const items = [
-        { name: 'Item 1', price: 10 },
-        { name: 'Item 2', price: 15 },
-        { name: 'Item 3', price: 20 }
-    ];
-
-    // Function to render items in the cart
-    function renderItems() {
-        itemsContainer.innerHTML = '';
-        let totalPrice = 0;
-
-        items.forEach((item, index) => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('cart-item');
-            itemElement.innerHTML = `
-                <span class="item-name">${item.name}</span>
-                <div class="item-actions">
-                    <button class="quantity-btn decrease">-</button>
-                    <span class="item-quantity">1</span>
-                    <button class="quantity-btn increase">+</button>
-                    <button class="like-btn">♡</button>
-                    <button class="delete-btn">Delete</button>
-                </div>
-                <span class="item-price">$${item.price}</span>
-            `;
-            itemsContainer.appendChild(itemElement);
-
-            // Calculate total price
-            totalPrice += item.price;
-        });
-
-        // Update total price display
-        totalPriceElement.textContent = `$${totalPrice}`;
+let images = Array.from(document.querySelectorAll('.img-fluid.rounded-start'));
+let plusbtns = Array.from(document.querySelectorAll('.fas.fa-plus-circle'));
+let minusbtns = Array.from(document.querySelectorAll('.fas.fa-minus-circle'));
+let trashs = Array.from(document.querySelectorAll('.fas.fa-trash-alt'));
+let favs = Array.from(document.querySelectorAll('.fas.fa-heart'));
+let cards = Array.from(document.querySelectorAll('.card.mb-3'));
+let prices = Array.from(document.querySelectorAll('.unitt-price'));
+let numbers = Array.from(document.querySelectorAll('.qute'));
+let totalns = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+function refresh (){
+    let finaprice = 0;
+    for (let eachprice of totalns){
+        finaprice=finaprice+eachprice;
+        document.getElementById('total-price').innerHTML=finaprice;
     }
+}
+for (let plusbtn of plusbtns) {
+    plusbtn.addEventListener('click', function() {
+        plusbtn.nextElementSibling.innerHTML = parseInt(plusbtn.nextElementSibling.innerHTML) + 1;
+        totalns[plusbtns.indexOf(plusbtn)] = totalns[plusbtns.indexOf(plusbtn)] + parseInt(prices[plusbtns.indexOf(plusbtn)].innerHTML);
+        console.log('Total number:', totalns);  
+        refresh ();
+    });
+}
 
-    // Initial render
-    renderItems();
+for (let minusbtn of minusbtns) {
+    minusbtn.addEventListener('click', function() {
+        if (parseInt(minusbtn.previousElementSibling.innerHTML) > 0) {
+            minusbtn.previousElementSibling.innerHTML = parseInt(minusbtn.previousElementSibling.innerHTML) - 1;
+            totalns[minusbtns.indexOf(minusbtn)] = totalns[minusbtns.indexOf(minusbtn)] - parseInt(prices[minusbtns.indexOf(minusbtn)].innerHTML );
+            console.log('Total number:', totalns);
+            refresh ();
+        }   
+    });
+}
 
-    // Event delegation for dynamic elements (like-btn, delete-btn, quantity-btn)
-    itemsContainer.addEventListener('click', function(event) {
-        const target = event.target;
-        const item = target.closest('.cart-item');
+for (let trash of trashs) {
+    let r = trashs.indexOf(trash);
+    trash.addEventListener('click', function() {
+        totalns[trashs.indexOf(trash)] =  0 ;
+        cards[r].remove();
+        console.log('Total number:', totalns);  
+        refresh ();
+    });
+}
 
-        if (!item) return;
-
-        if (target.classList.contains('delete-btn')) {
-            // Delete item
-            const itemIndex = Array.from(itemsContainer.children).indexOf(item);
-            items.splice(itemIndex, 1);
-            renderItems();
-        }
-
-        if (target.classList.contains('like-btn')) {
-            // Toggle like (change heart color)
-            target.classList.toggle('active');
-        }
-
-        if (target.classList.contains('increase')) {
-            // Increase quantity
-            const quantityElement = item.querySelector('.item-quantity');
-            let quantity = parseInt(quantityElement.textContent);
-            quantity++;
-            quantityElement.textContent = quantity;
-            // Update total price accordingly (if needed)
-        }
-
-        if (target.classList.contains('decrease')) {
-            // Decrease quantity
-            const quantityElement = item.querySelector('.item-quantity');
-            let quantity = parseInt(quantityElement.textContent);
-            if (quantity > 1) {
-                quantity--;
-                quantityElement.textContent = quantity;
-                // Update total price accordingly (if needed)
-            }
+for (let fav of favs) {
+    let c = 0;
+    fav.addEventListener('click', function() {
+        if (c === 0) {
+            fav.style.color = 'red';
+            c = 1;
+        } else {
+            fav.style.color = '#007bff' ;
+            c = 0;
         }
     });
-});
+}
